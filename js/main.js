@@ -1,5 +1,7 @@
 'use strict';
 
+var ANNOUNCEMENTS__COUNT = 8;
+
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 var mapWidth = map.clientWidth;
@@ -10,14 +12,22 @@ var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-var generateDefaultObjects = function () {
+var generateDefaultObjects = function (objectsCount) {
   var objectsArray = [];
-  var types = ['palace', 'flat', 'house', 'bungalo'];
-  var time = ['12:00', '13:00', '14:00'];
-  var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+  var TIMES = ['12:00', '13:00', '14:00'];
+  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var MIN_PRICE = 1000;
+  var MAX_PRICE = 5000;
+  var MIN_ROOMS_COUNT = 1;
+  var MAX_ROOMS_COUNT = 5;
+  var MIN_GUESTS_COUNT = 1;
+  var MAX_GUESTS_COUNT = 5;
+  var MIN_PIN_Y_AXIS = 130;
+  var MAX_PIN_Y_AXIS = 630;
 
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < objectsCount; i++) {
     objectsArray.push({
       author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png',
@@ -25,34 +35,35 @@ var generateDefaultObjects = function () {
       offer: {
         title: 'Уютная квартира',
         address: '600, 350',
-        price: getRandomNumber(1000, 5000),
-        type: types[getRandomNumber(0, 3)],
-        room: getRandomNumber(1, 5),
-        guests: getRandomNumber(1, 5),
-        checkin: time[getRandomNumber(0, 2)],
-        checkout: time[getRandomNumber(0, 2)],
-        features: features.slice().splice(getRandomNumber(0, features.length - 1)),
+        price: getRandomNumber(MIN_PRICE, MAX_PRICE),
+        type: TYPES[getRandomNumber(0, TYPES.length - 1)],
+        room: getRandomNumber(MIN_ROOMS_COUNT, MAX_ROOMS_COUNT),
+        guests: getRandomNumber(MIN_GUESTS_COUNT, MAX_GUESTS_COUNT),
+        checkin: TIMES[getRandomNumber(0, TIMES.length - 1)],
+        checkout: TIMES[getRandomNumber(0, TIMES.length - 1)],
+        features: FEATURES.slice().splice(getRandomNumber(0, FEATURES.length - 1)),
         description: 'Уютная квартира',
-        photos: photos,
+        photos: PHOTOS,
       },
       location: {
         x: getRandomNumber(0, mapWidth),
-        y: getRandomNumber(130, 630)
+        y: getRandomNumber(MIN_PIN_Y_AXIS, MAX_PIN_Y_AXIS)
       }
     });
   }
   return objectsArray;
 };
 
-var dataArray = generateDefaultObjects();
+var dataArray = generateDefaultObjects(ANNOUNCEMENTS__COUNT);
 
 var renderPin = function (offer) {
   var pin = mapPinTemplate.cloneNode(true);
+  var pinImage = pin.querySelector('img');
 
-  pin.style.left = offer.location.x + 10 + 'px';
-  pin.style.top = offer.location.y + 20 + 'px';
-  pin.querySelector('img').src = offer.author.avatar;
-  pin.querySelector('img').alt = offer.offer.title;
+  pin.style.left = offer.location.x - 25 + 'px';
+  pin.style.top = offer.location.y - 35 + 'px';
+  pinImage.src = offer.author.avatar;
+  pinImage.alt = offer.offer.title;
 
   return pin;
 };
