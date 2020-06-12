@@ -59,9 +59,11 @@ var dataArray = generateDefaultObjects(ANNOUNCEMENTS__COUNT);
 var renderPin = function (offer) {
   var pin = mapPinTemplate.cloneNode(true);
   var pinImage = pin.querySelector('img');
+  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = 70;
 
-  pin.style.left = offer.location.x - 25 + 'px';
-  pin.style.top = offer.location.y - 35 + 'px';
+  pin.style.left = offer.location.x - PIN_WIDTH / 2 + 'px';
+  pin.style.top = offer.location.y - PIN_HEIGHT / 2 + 'px';
   pinImage.src = offer.author.avatar;
   pinImage.alt = offer.offer.title;
 
