@@ -1,6 +1,20 @@
 'use strict';
 
 var ANNOUNCEMENTS__COUNT = 8;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TIMES = ['12:00', '13:00', '14:00'];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var MIN_PRICE = 1000;
+var MAX_PRICE = 5000;
+var MIN_ROOMS_COUNT = 1;
+var MAX_ROOMS_COUNT = 5;
+var MIN_GUESTS_COUNT = 1;
+var MAX_GUESTS_COUNT = 5;
+var MIN_PIN_Y_AXIS = 130;
+var MAX_PIN_Y_AXIS = 630;
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
@@ -14,18 +28,6 @@ var getRandomNumber = function (min, max) {
 
 var generateDefaultObjects = function (objectsCount) {
   var objectsArray = [];
-  var TYPES = ['palace', 'flat', 'house', 'bungalo'];
-  var TIMES = ['12:00', '13:00', '14:00'];
-  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  var MIN_PRICE = 1000;
-  var MAX_PRICE = 5000;
-  var MIN_ROOMS_COUNT = 1;
-  var MAX_ROOMS_COUNT = 5;
-  var MIN_GUESTS_COUNT = 1;
-  var MAX_GUESTS_COUNT = 5;
-  var MIN_PIN_Y_AXIS = 130;
-  var MAX_PIN_Y_AXIS = 630;
 
   for (var i = 0; i < objectsCount; i++) {
     objectsArray.push({
@@ -51,24 +53,23 @@ var generateDefaultObjects = function (objectsCount) {
       }
     });
   }
+
   return objectsArray;
 };
-
-var dataArray = generateDefaultObjects(ANNOUNCEMENTS__COUNT);
 
 var renderPin = function (offer) {
   var pin = mapPinTemplate.cloneNode(true);
   var pinImage = pin.querySelector('img');
-  var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
 
   pin.style.left = offer.location.x - PIN_WIDTH / 2 + 'px';
-  pin.style.top = offer.location.y - PIN_HEIGHT / 2 + 'px';
+  pin.style.top = offer.location.y - PIN_HEIGHT + 'px';
   pinImage.src = offer.author.avatar;
   pinImage.alt = offer.offer.title;
 
   return pin;
 };
+
+var dataArray = generateDefaultObjects(ANNOUNCEMENTS__COUNT);
 
 var fragment = document.createDocumentFragment();
 dataArray.forEach(function (offer) {
