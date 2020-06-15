@@ -92,9 +92,17 @@ var createCard = function (offerData) {
   announcementPrice.textContent = offerData.offer.price || '';
   announcementRooms.textContent = (offerData.offer.room + ' комнаты для ' + offerData.offer.guests + ' гостей') || '';
   announcementTime.textContent = ('Заезд после ' + offerData.offer.checkin + ', выезд до ' + offerData.offer.checkout) || '';
-  announcementFeatures.textContent = offerData.offer.features || '';
   announcementDesctiption.textContent = offerData.offer.description || '';
   announcementAvatar.src = offerData.author.avatar;
+
+  var featuresFragment = document.createDocumentFragment();
+  offerData.offer.features.forEach(function (item) {
+    var featureItem = document.createElement('li');
+    featureItem.classList.add('popup__feature', 'popup__feature--' + item);
+    featuresFragment.appendChild(featureItem);
+  });
+  announcementFeatures.innerHTML = '';
+  announcementFeatures.appendChild(featuresFragment);
 
   switch (offerData.offer.type) {
     case 'flat':
