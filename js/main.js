@@ -3,6 +3,9 @@
 var ANNOUNCEMENTS__COUNT = 8;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MAIN_PIN_WIDTH = 62;
+var MAIN_PIN_HEIGHT = 62;
+var SHARP_END_PIN_HEIGHT = 22;
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -146,7 +149,7 @@ var renderPin = function (offer) {
 //   return announcement;
 // };
 
-var disabledInputs = function () {
+var disablingInputs = function () {
   for (var input in adFormInputs) {
     if (adFormInputs.hasOwnProperty(input)) {
       adFormInputs[input].disabled = true;
@@ -200,12 +203,12 @@ var activationInputs = function () {
 
 var setAddressValue = function (isActivePage) {
   adFormAddress.value = isActivePage
-    ? (parseInt(mapPin.style.left, 10) + PIN_WIDTH / 2) + ', ' + (parseInt(mapPin.style.top, 10) + PIN_HEIGHT)
-    : (parseInt(mapPin.style.left, 10) + PIN_WIDTH / 2) + ', ' + (parseInt(mapPin.style.top, 10) + PIN_HEIGHT / 2);
+    ? (parseInt(mapPin.style.left, 10) + MAIN_PIN_WIDTH / 2) + ', ' + (parseInt(mapPin.style.top, 10) + MAIN_PIN_HEIGHT + SHARP_END_PIN_HEIGHT)
+    : (parseInt(mapPin.style.left, 10) + MAIN_PIN_WIDTH / 2) + ', ' + (parseInt(mapPin.style.top, 10) + MAIN_PIN_HEIGHT / 2);
 };
 
 setAddressValue(false);
-disabledInputs();
+disablingInputs();
 
 var dataArray = generateDefaultObjects(ANNOUNCEMENTS__COUNT);
 
@@ -216,6 +219,7 @@ dataArray.forEach(function (offer) {
 
 var activationPage = function () {
   map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
   activationInputs();
 
   mapPinsContainer.appendChild(fragment);
