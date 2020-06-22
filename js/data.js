@@ -31,19 +31,19 @@
         offer: {
           title: 'Уютная квартира',
           address: '600, 350',
-          price: window.getRandomNumber(MIN_PRICE, MAX_PRICE),
-          type: TYPES[window.getRandomNumber(0, TYPES.length - 1)],
-          room: window.getRandomNumber(MIN_ROOMS_COUNT, MAX_ROOMS_COUNT),
-          guests: window.getRandomNumber(MIN_GUESTS_COUNT, MAX_GUESTS_COUNT),
-          checkin: TIMES[window.getRandomNumber(0, TIMES.length - 1)],
-          checkout: TIMES[window.getRandomNumber(0, TIMES.length - 1)],
-          features: FEATURES.slice().splice(window.getRandomNumber(0, FEATURES.length - 1)),
+          price: window.utils.getRandomNumber(MIN_PRICE, MAX_PRICE),
+          type: TYPES[window.utils.getRandomNumber(0, TYPES.length - 1)],
+          room: window.utils.getRandomNumber(MIN_ROOMS_COUNT, MAX_ROOMS_COUNT),
+          guests: window.utils.getRandomNumber(MIN_GUESTS_COUNT, MAX_GUESTS_COUNT),
+          checkin: TIMES[window.utils.getRandomNumber(0, TIMES.length - 1)],
+          checkout: TIMES[window.utils.getRandomNumber(0, TIMES.length - 1)],
+          features: FEATURES.slice().splice(window.utils.getRandomNumber(0, FEATURES.length - 1)),
           description: 'Уютная квартира',
           photos: PHOTOS,
         },
         location: {
-          x: window.getRandomNumber(0, mapWidth),
-          y: window.getRandomNumber(MIN_PIN_Y_AXIS, MAX_PIN_Y_AXIS)
+          x: window.utils.getRandomNumber(0, mapWidth),
+          y: window.utils.getRandomNumber(MIN_PIN_Y_AXIS, MAX_PIN_Y_AXIS)
         }
       });
     }
@@ -51,6 +51,8 @@
     return objectsArray;
   };
 
-  window.data = generateDefaultObjects(ANNOUNCEMENTS__COUNT);
+  window.data = {
+    dataArray: generateDefaultObjects(ANNOUNCEMENTS__COUNT)
+  };
 
 })();

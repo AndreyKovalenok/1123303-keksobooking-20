@@ -69,7 +69,7 @@
     if (announcementСardTemplate.classList.contains('visually-hidden')) {
       announcementСardTemplate.classList.remove('visually-hidden');
     }
-    createCard(window.data[index]);
+    createCard(window.data.dataArray[index]);
   };
 
   var closeCard = function () {

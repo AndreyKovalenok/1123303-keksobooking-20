@@ -5,7 +5,7 @@
   window.form.setAddressValue(false);
   window.form.disablingInputs();
 
-  window.data.forEach(function (offer, index) {
+  window.data.dataArray.forEach(function (offer, index) {
     var pin = window.pin.renderPin(offer);
     pin.addEventListener('click', function () {
       window.card.openCard(index);
@@ -30,7 +30,7 @@
     window.form.validateGuestsFiled();
 
     window.pin.mapPinsContainer.appendChild(window.pin.fragment);
-    window.card.createCard(window.data[0]);
+    window.card.createCard(window.data.dataArray[0]);
     window.form.mapFilter.insertAdjacentElement('beforeBegin', window.card.template);
 
     window.card.closeButton.addEventListener('click', function () {
