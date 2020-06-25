@@ -4,24 +4,23 @@
 
   var announcementСardTemplate = document.querySelector('#card').content.querySelector('article');
   var announcementСardCloseBtn = announcementСardTemplate.querySelector('.popup__close');
+  var announcementPhoto = announcementСardTemplate.querySelector('.popup__photo');
+  var announcementTitle = announcementСardTemplate.querySelector('.popup__title');
+  var announcementAddress = announcementСardTemplate.querySelector('.popup__text--address');
+  var announcementPrice = announcementСardTemplate.querySelector('.popup__text--price');
+  var announcementType = announcementСardTemplate.querySelector('.popup__type');
+  var announcementRooms = announcementСardTemplate.querySelector('.popup__text--capacity');
+  var announcementTime = announcementСardTemplate.querySelector('.popup__text--time');
+  var announcementFeatures = announcementСardTemplate.querySelector('.popup__features');
+  var announcementDesctiption = announcementСardTemplate.querySelector('.popup__description');
+  var announcementPhotos = announcementСardTemplate.querySelector('.popup__photos');
+  var announcementAvatar = announcementСardTemplate.querySelector('.popup__avatar');
 
   var createCard = function (offerData) {
-    var announcementTitle = announcementСardTemplate.querySelector('.popup__title');
-    var announcementAddress = announcementСardTemplate.querySelector('.popup__text--address');
-    var announcementPrice = announcementСardTemplate.querySelector('.popup__text--price');
-    var announcementType = announcementСardTemplate.querySelector('.popup__type');
-    var announcementRooms = announcementСardTemplate.querySelector('.popup__text--capacity');
-    var announcementTime = announcementСardTemplate.querySelector('.popup__text--time');
-    var announcementFeatures = announcementСardTemplate.querySelector('.popup__features');
-    var announcementDesctiption = announcementСardTemplate.querySelector('.popup__description');
-    var announcementPhotos = announcementСardTemplate.querySelector('.popup__photos');
-    var announcementPhoto = announcementСardTemplate.querySelector('.popup__photo');
-    var announcementAvatar = announcementСardTemplate.querySelector('.popup__avatar');
-
     announcementTitle.textContent = offerData.offer.title || '';
     announcementAddress.textContent = offerData.offer.address || '';
     announcementPrice.textContent = offerData.offer.price || '';
-    announcementRooms.textContent = (offerData.offer.room + ' комнаты для ' + offerData.offer.guests + ' гостей') || '';
+    announcementRooms.textContent = (offerData.offer.rooms + ' комнаты для ' + offerData.offer.guests + ' гостей') || '';
     announcementTime.textContent = ('Заезд после ' + offerData.offer.checkin + ', выезд до ' + offerData.offer.checkout) || '';
     announcementDesctiption.textContent = offerData.offer.description || '';
     announcementAvatar.src = offerData.author.avatar;
