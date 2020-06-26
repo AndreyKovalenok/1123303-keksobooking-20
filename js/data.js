@@ -33,7 +33,7 @@
           address: '600, 350',
           price: window.utils.getRandomNumber(MIN_PRICE, MAX_PRICE),
           type: TYPES[window.utils.getRandomNumber(0, TYPES.length - 1)],
-          room: window.utils.getRandomNumber(MIN_ROOMS_COUNT, MAX_ROOMS_COUNT),
+          rooms: window.utils.getRandomNumber(MIN_ROOMS_COUNT, MAX_ROOMS_COUNT),
           guests: window.utils.getRandomNumber(MIN_GUESTS_COUNT, MAX_GUESTS_COUNT),
           checkin: TIMES[window.utils.getRandomNumber(0, TIMES.length - 1)],
           checkout: TIMES[window.utils.getRandomNumber(0, TIMES.length - 1)],
