@@ -5,6 +5,9 @@
   var adForm = document.querySelector('.ad-form');
   var adFormInputs = adForm.querySelectorAll('input');
   var adFormSelects = adForm.querySelectorAll('select');
+  var adFormResetButton = adForm.querySelector('.ad-form__reset');
+
+  var adFormTitleInput = adForm.querySelector('input[name = "title"]');
   var adFormAddress = adForm.querySelector('input[name = "address"]');
   var adFormGuestsInput = adForm.querySelector('select[name = "capacity"]');
   var adFormRoomsInput = adForm.querySelector('select[name = "rooms"]');
@@ -12,39 +15,47 @@
   var adFormPriceInput = adForm.querySelector('input[name = "price"]');
   var adFormTimeInSelect = adForm.querySelector('select[name = "timein"]');
   var adFormTimeOutSelect = adForm.querySelector('select[name = "timeout"]');
+  var adFormDescriptionInput = adForm.querySelector('textarea[name = "description"]');
 
   var mapFilter = document.querySelector('.map__filters-container');
   var mapFilterInputs = mapFilter.querySelectorAll('input');
   var mapFilterSelects = mapFilter.querySelectorAll('select');
+
+  var successTemplate = document.querySelector('#success').content.querySelector('div');
+  var errorTemplate = document.querySelector('#error').content.querySelector('div');
+  var errorButton = errorTemplate.querySelector('.error__button');
 
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 62;
   var SHARP_END_PIN_HEIGHT = 22;
 
   var disablingInputs = function () {
-    for (var input in adFormInputs) {
-      if (adFormInputs.hasOwnProperty(input)) {
-        adFormInputs[input].disabled = true;
-      }
-    }
+    Array.from(adFormInputs).forEach(function (input) {
+      input.disabled = true;
+    });
 
-    for (var select in adFormSelects) {
-      if (adFormSelects.hasOwnProperty(select)) {
-        adFormSelects[select].disabled = true;
-      }
-    }
+    Array.from(mapFilterInputs).forEach(function (input) {
+      input.disabled = true;
+    });
 
-    for (input in mapFilterInputs) {
-      if (mapFilterInputs.hasOwnProperty(input)) {
-        mapFilterInputs[input].disabled = true;
-      }
-    }
+    Array.from(adFormSelects).forEach(function (select) {
+      select.disabled = true;
+    });
 
-    for (select in mapFilterSelects) {
-      if (mapFilterSelects.hasOwnProperty(select)) {
-        mapFilterSelects[select].disabled = true;
-      }
-    }
+    Array.from(mapFilterSelects).forEach(function (select) {
+      select.disabled = true;
+    });
+  };
+
+  var resetForm = function () {
+    adFormTitleInput.value = '';
+    adFormTypeSelect.value = 'flat';
+    adFormPriceInput.value = '';
+    adFormTimeInSelect.value = '12:00';
+    adFormTimeOutSelect.value = '12:00';
+    adFormRoomsInput.value = '1';
+    adFormGuestsInput.value = '3';
+    adFormDescriptionInput.value = '';
   };
 
   var activationInputs = function () {
@@ -179,6 +190,65 @@
   adFormTimeInSelect.addEventListener('input', function () {
     adFormTimeOutSelect.value = adFormTimeInSelect.value;
   });
+
+  var successEscKeyDownHandler = function (evt) {
+    if (evt.keyCode === 27) {
+      successTemplate.remove();
+
+      document.removeEventListener('keydown', successEscKeyDownHandler);
+    }
+  };
+  var errorEscKeyDownHandler = function (evt) {
+    if (evt.keyCode === 27) {
+      errorTemplate.remove();
+
+      document.removeEventListener('keydown', errorEscKeyDownHandler);
+    }
+  };
+
+  var successClickHandler = function () {
+    successTemplate.remove();
+  };
+
+  var errorClickHandler = function () {
+    errorTemplate.remove();
+  };
+
+  var errorHandler = function () {
+    var main = document.querySelector('main');
+    main.insertAdjacentElement('afterbegin', errorTemplate);
+
+    document.addEventListener('keydown', errorEscKeyDownHandler);
+    errorButton.addEventListener('click', errorClickHandler);
+  };
+
+  var submitHandler = function (evt) {
+    window.backend.save(new FormData(adForm), function () {
+      window.map.mapBlock.classList.add('map--faded');
+      window.form.adForm.classList.add('ad-form--disabled');
+
+      disablingInputs();
+      resetForm();
+
+      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      Array.from(pins).forEach(function (pin) {
+        pin.remove();
+      });
+      window.map.mapPin.addEventListener('mousedown', window.map.pinClickHandler);
+      window.map.mapPin.addEventListener('keydown', window.map.pinKeyDownHandler);
+
+      var card = document.querySelector('.map__card');
+      card.remove();
+
+      document.body.insertAdjacentElement('afterbegin', successTemplate);
+      successTemplate.addEventListener('click', successClickHandler);
+      document.addEventListener('keydown', successEscKeyDownHandler);
+    }, errorHandler);
+    evt.preventDefault();
+  };
+
+  adForm.addEventListener('submit', submitHandler);
+  adFormResetButton.addEventListener('click', resetForm);
 
   window.form = {
     adForm: adForm,

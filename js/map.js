@@ -29,7 +29,9 @@
 
   window.map = {
     mapBlock: mapBlock,
-    mapPin: mapPin
+    mapPin: mapPin,
+    pinClickHandler: pinClickHandler,
+    pinKeyDownHandler: pinKeyDownHandler
   };
 
 })();
