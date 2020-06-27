@@ -59,29 +59,21 @@
   };
 
   var activationInputs = function () {
-    for (var input in adFormInputs) {
-      if (adFormInputs.hasOwnProperty(input)) {
-        adFormInputs[input].disabled = false;
-      }
-    }
+    Array.from(adFormInputs).forEach(function (input) {
+      input.disabled = false;
+    });
 
-    for (var select in adFormSelects) {
-      if (adFormSelects.hasOwnProperty(select)) {
-        adFormSelects[select].disabled = false;
-      }
-    }
+    Array.from(mapFilterInputs).forEach(function (input) {
+      input.disabled = false;
+    });
 
-    for (input in mapFilterInputs) {
-      if (mapFilterInputs.hasOwnProperty(input)) {
-        mapFilterInputs[input].disabled = false;
-      }
-    }
+    Array.from(adFormSelects).forEach(function (select) {
+      select.disabled = false;
+    });
 
-    for (select in mapFilterSelects) {
-      if (mapFilterSelects.hasOwnProperty(select)) {
-        mapFilterSelects[select].disabled = false;
-      }
-    }
+    Array.from(mapFilterSelects).forEach(function (select) {
+      select.disabled = false;
+    });
   };
 
   var setAddressValue = function (isActivePage) {
@@ -258,7 +250,8 @@
     disablingInputs: disablingInputs,
     validateGuestsFiled: validateGuestsFiled,
     adFormGuestsInput: adFormGuestsInput,
-    adFormRoomsInput: adFormRoomsInput
+    adFormRoomsInput: adFormRoomsInput,
+    adFormAddress: adFormAddress
   };
 
 })();
