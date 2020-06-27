@@ -31,7 +31,7 @@
       window.form.activationInputs();
       window.form.validateGuestsFiled();
 
-      window.pin.mapPinsContainer.appendChild(window.pin.fragment);
+      window.pin.mapPinsContainer.appendChild(window.pin.fragment.cloneNode(true));
       window.card.createCard(window.data.dataArray[0]);
       window.form.mapFilter.insertAdjacentElement('beforeBegin', window.card.template);
 
