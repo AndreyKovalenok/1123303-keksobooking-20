@@ -20,6 +20,7 @@
   var mapFilter = document.querySelector('.map__filters-container');
   var mapFilterInputs = mapFilter.querySelectorAll('input');
   var mapFilterSelects = mapFilter.querySelectorAll('select');
+  var mapFilterTypeSelect = mapFilter.querySelector('select[name = "housing-type"]');
 
   var successTemplate = document.querySelector('#success').content.querySelector('div');
   var errorTemplate = document.querySelector('#error').content.querySelector('div');
@@ -63,12 +64,14 @@
       input.disabled = false;
     });
 
-    Array.from(mapFilterInputs).forEach(function (input) {
-      input.disabled = false;
-    });
-
     Array.from(adFormSelects).forEach(function (select) {
       select.disabled = false;
+    });
+  };
+
+  var activationSortInputs = function () {
+    Array.from(mapFilterInputs).forEach(function (input) {
+      input.disabled = false;
     });
 
     Array.from(mapFilterSelects).forEach(function (select) {
@@ -167,6 +170,7 @@
   adFormGuestsInput.addEventListener('input', function () {
     validateGuestsFiled(adFormGuestsInput.value, adFormRoomsInput.value);
   });
+
   adFormRoomsInput.addEventListener('input', function () {
     validateGuestsFiled(adFormGuestsInput.value, adFormRoomsInput.value);
   });
@@ -183,6 +187,22 @@
     adFormTimeOutSelect.value = adFormTimeInSelect.value;
   });
 
+  mapFilterTypeSelect.addEventListener('input', function () {
+    var sortedArray = mapFilterTypeSelect.value !== 'any'
+      ? window.data.dataArray.filter(function (el) {
+        return el.offer.type === mapFilterTypeSelect.value;
+      })
+      : window.data.dataArray;
+
+    window.pin.removePins();
+
+    var lim = sortedArray.length > 5 ? 5 : sortedArray.length;
+    window.pin.renderPins(sortedArray, lim);
+    window.pin.mounPins();
+
+    window.card.closeCard();
+  });
+
   var successEscKeyDownHandler = function (evt) {
     if (evt.keyCode === 27) {
       successTemplate.remove();
@@ -190,6 +210,7 @@
       document.removeEventListener('keydown', successEscKeyDownHandler);
     }
   };
+
   var errorEscKeyDownHandler = function (evt) {
     if (evt.keyCode === 27) {
       errorTemplate.remove();
@@ -222,12 +243,11 @@
       disablingInputs();
       resetForm();
 
-      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-      Array.from(pins).forEach(function (pin) {
-        pin.remove();
-      });
+      window.pin.removePins();
       window.map.mapPin.addEventListener('mousedown', window.map.pinClickHandler);
       window.map.mapPin.addEventListener('keydown', window.map.pinKeyDownHandler);
+
+      window.pin.renderPins(window.data.dataArray, window.data.announcementsCount);
 
       var card = document.querySelector('.map__card');
       card.remove();
@@ -247,6 +267,7 @@
     mapFilter: mapFilter,
     setAddressValue: setAddressValue,
     activationInputs: activationInputs,
+    activationSortInputs: activationSortInputs,
     disablingInputs: disablingInputs,
     validateGuestsFiled: validateGuestsFiled,
     adFormGuestsInput: adFormGuestsInput,

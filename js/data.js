@@ -5,7 +5,7 @@
   var map = document.querySelector('.map');
   var mapWidth = map.clientWidth;
 
-  var ANNOUNCEMENTS__COUNT = 8;
+  var ANNOUNCEMENTS__COUNT = 5;
 
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var TIMES = ['12:00', '13:00', '14:00'];
@@ -52,7 +52,8 @@
   };
 
   window.data = {
-    dataArray: generateDefaultObjects(ANNOUNCEMENTS__COUNT)
+    dataArray: generateDefaultObjects(ANNOUNCEMENTS__COUNT),
+    announcementsCount: ANNOUNCEMENTS__COUNT
   };
 
 })();
