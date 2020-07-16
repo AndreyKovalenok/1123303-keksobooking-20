@@ -189,10 +189,10 @@
 
   mapFilterTypeSelect.addEventListener('input', function () {
     var sortedArray = mapFilterTypeSelect.value !== 'any'
-      ? window.data.dataArray.filter(function (el) {
+      ? window.dataArray.filter(function (el) {
         return el.offer.type === mapFilterTypeSelect.value;
       })
-      : window.data.dataArray;
+      : window.dataArray;
 
     window.pin.removePins();
 
@@ -247,7 +247,7 @@
       window.map.mapPin.addEventListener('mousedown', window.map.pinClickHandler);
       window.map.mapPin.addEventListener('keydown', window.map.pinKeyDownHandler);
 
-      window.pin.renderPins(window.data.dataArray, window.data.announcementsCount);
+      window.pin.renderPins(window.dataArray, window.announcementsCount);
 
       var card = document.querySelector('.map__card');
       card.remove();
