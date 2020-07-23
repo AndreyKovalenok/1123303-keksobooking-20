@@ -64,23 +64,23 @@
     });
   };
 
-  var openCard = function (index) {
+  var openCard = function (data, index) {
     if (announcementСardTemplate.classList.contains('visually-hidden')) {
       announcementСardTemplate.classList.remove('visually-hidden');
     }
-    createCard(window.data.dataArray[index]);
+    createCard(data[index]);
   };
 
   var closeCard = function () {
     announcementСardTemplate.classList.add('visually-hidden');
   };
 
-  var onCardEscPress = function (evt) {
+  var cardEscPressHandler = function (evt) {
     if (evt.keyCode === 27) {
       closeCard();
     }
 
-    document.removeEventListener('keydown', onCardEscPress);
+    document.removeEventListener('keydown', cardEscPressHandler);
   };
 
   window.card = {
@@ -89,7 +89,7 @@
     createCard: createCard,
     openCard: openCard,
     closeCard: closeCard,
-    onCardEscPress: onCardEscPress
+    cardEscPressHandler: cardEscPressHandler
   };
 
 })();
