@@ -7,9 +7,10 @@
 
   window.form.setAddressValue(false);
   window.form.disablingInputs();
+  window.mapFilter.disablingMapInputs();
 
   var successHandler = function (offers) {
-    window.form.activationSortInputs();
+    window.mapFilter.activationMapInputs();
     window.dataArray = offers;
 
     window.pin.renderPins(offers, window.announcementsCount);
@@ -28,7 +29,8 @@
 
     window.pin.mounPins();
     window.card.createCard(window.dataArray[0]);
-    window.form.mapFilter.insertAdjacentElement('beforeBegin', window.card.template);
+    window.card.closeCard();
+    window.mapFilter.mapFilter.insertAdjacentElement('beforeBegin', window.card.template);
 
     window.card.closeButton.addEventListener('click', function () {
       window.card.closeCard();

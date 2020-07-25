@@ -2,15 +2,15 @@
 
 (function () {
 
-  var mapBlock = document.querySelector('.map');
-  var mapPin = mapBlock.querySelector('.map__pin--main');
-  var mapWidth = mapBlock.clientWidth;
-
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 62;
   var SHARP_END_PIN_HEIGHT = 22;
   var MIN_PIN_Y_AXIS = 130;
   var MAX_PIN_Y_AXIS = 630;
+
+  var mapBlock = document.querySelector('.map');
+  var mapPin = mapBlock.querySelector('.map__pin--main');
+  var mapWidth = mapBlock.clientWidth;
 
   var pinClickHandler = function (evt) {
     if (evt.button === 0) {

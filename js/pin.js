@@ -2,11 +2,11 @@
 
 (function () {
 
-  var mapPinTemplate = document.querySelector('#pin').content.querySelector('button');
-  var mapPinsContainer = document.querySelector('.map__pins');
-
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
+
+  var mapPinTemplate = document.querySelector('#pin').content.querySelector('button');
+  var mapPinsContainer = document.querySelector('.map__pins');
 
   var renderPin = function (offer, index, data) {
     var pin = mapPinTemplate.cloneNode(true);
