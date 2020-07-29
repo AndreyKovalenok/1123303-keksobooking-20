@@ -2,18 +2,17 @@
 
 (function () {
 
-  var ANNOUNCEMENTS__COUNT = 5;
-  window.announcementsCount = ANNOUNCEMENTS__COUNT;
+  var ANNOUNCEMENTS_COUNT = 5;
+  window.announcementsCount = ANNOUNCEMENTS_COUNT;
 
+  window.mapFilter.disablingInputs();
   window.form.setAddressValue(false);
   window.form.disablingInputs();
-  window.mapFilter.disablingMapInputs();
 
   var successHandler = function (offers) {
-    window.mapFilter.activationMapInputs();
     window.dataArray = offers;
 
-    window.pin.renderPins(offers, window.announcementsCount);
+    window.pin.render(offers, window.announcementsCount);
   };
 
   var errorHandler = function (error) {
@@ -21,19 +20,20 @@
   };
 
   window.activationPage = function () {
-    window.map.mapBlock.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
+    window.map.node.classList.remove('map--faded');
+    window.form.node.classList.remove('ad-form--disabled');
 
+    window.mapFilter.activationInputs();
     window.form.activationInputs();
     window.form.validateGuestsFiled();
 
-    window.pin.mounPins();
-    window.card.createCard(window.dataArray[0]);
-    window.card.closeCard();
-    window.mapFilter.mapFilter.insertAdjacentElement('beforeBegin', window.card.template);
+    window.pin.mount();
+    window.card.create(window.dataArray[0]);
+    window.card.close();
+    window.mapFilter.node.insertAdjacentElement('beforeBegin', window.card.template);
 
     window.card.closeButton.addEventListener('click', function () {
-      window.card.closeCard();
+      window.card.close();
 
       document.removeEventListener('keydown', window.card.cardEscPressHandler);
     });

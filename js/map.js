@@ -99,12 +99,12 @@
       y: parseInt(mapPin.style.top, 10) + MAIN_PIN_HEIGHT + SHARP_END_PIN_HEIGHT,
     };
 
-    window.form.adFormAddress.value = coords.x + ', ' + coords.y;
+    window.form.address.value = coords.x + ', ' + coords.y;
   };
 
   window.map = {
-    mapBlock: mapBlock,
-    mapPin: mapPin,
+    node: mapBlock,
+    pin: mapPin,
     pinClickHandler: pinClickHandler,
     pinKeyDownHandler: pinKeyDownHandler
   };

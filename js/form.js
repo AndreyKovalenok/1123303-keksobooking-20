@@ -6,6 +6,13 @@
   var MAIN_PIN_HEIGHT = 62;
   var SHARP_END_PIN_HEIGHT = 22;
 
+  var minPriceForType = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
+
   var adForm = document.querySelector('.ad-form');
   var adFormInputs = adForm.querySelectorAll('input');
   var adFormSelects = adForm.querySelectorAll('select');
@@ -22,6 +29,7 @@
   var adFormTimeInSelect = adForm.querySelector('select[name = "timein"]');
   var adFormTimeOutSelect = adForm.querySelector('select[name = "timeout"]');
   var adFormDescriptionInput = adForm.querySelector('textarea[name = "description"]');
+  var adFormCheckboxInputs = adForm.querySelectorAll('input[type = "checkbox"]');
 
   var successTemplate = document.querySelector('#success').content.querySelector('div');
   var errorTemplate = document.querySelector('#error').content.querySelector('div');
@@ -53,30 +61,37 @@
     adFormRoomsInput.value = '1';
     adFormGuestsInput.value = '3';
     adFormDescriptionInput.value = '';
+    adFormCheckboxInputs.forEach(function (input) {
+      input.checked = false;
+    });
   };
 
   var disablingPage = function () {
-    window.map.mapBlock.classList.add('map--faded');
+    window.map.node.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
 
     disablingInputs();
     resetForm();
-    window.mapFilter.disablingMapInputs();
+    window.mapFilter.disablingInputs();
+    window.mapFilter.resetForm();
 
-    window.pin.removePins();
-    window.map.mapPin.addEventListener('mousedown', window.map.pinClickHandler);
-    window.map.mapPin.addEventListener('keydown', window.map.pinKeyDownHandler);
+    window.pin.remove();
+    window.map.pin.addEventListener('mousedown', window.map.pinClickHandler);
+    window.map.pin.addEventListener('keydown', window.map.pinKeyDownHandler);
 
-    window.pin.renderPins(window.dataArray, window.announcementsCount);
+    window.pin.render(window.dataArray, window.announcementsCount);
 
     var card = document.querySelector('.map__card');
     card.remove();
 
-    var left = window.map.mapBlock.offsetWidth / 2 - MAIN_PIN_WIDTH / 2;
-    var top = window.map.mapBlock.offsetHeight / 2;
-    window.map.mapPin.style.left = left + 'px';
-    window.map.mapPin.style.top = top + 'px';
+    var left = window.map.node.offsetWidth / 2 - MAIN_PIN_WIDTH / 2;
+    var top = window.map.node.offsetHeight / 2;
+    window.map.pin.style.left = left + 'px';
+    window.map.pin.style.top = top + 'px';
     adFormAddress.value = (left + MAIN_PIN_WIDTH / 2) + ', ' + (top + MAIN_PIN_HEIGHT / 2);
+
+    window.avatar.preview.src = 'img/muffin-grey.svg';
+    window.avatar.housingPreview.innerHTML = '';
   };
 
   var activationInputs = function () {
@@ -96,9 +111,9 @@
   var setAddressValue = function (isActivePage) {
     var calculateAddress = function () {
       if (isActivePage) {
-        return (parseInt(window.map.mapPin.style.left, 10) + MAIN_PIN_WIDTH / 2) + ', ' + (parseInt(window.map.mapPin.style.top, 10) + MAIN_PIN_HEIGHT + SHARP_END_PIN_HEIGHT);
+        return (parseInt(window.map.pin.style.left, 10) + MAIN_PIN_WIDTH / 2) + ', ' + (parseInt(window.map.pin.style.top, 10) + MAIN_PIN_HEIGHT + SHARP_END_PIN_HEIGHT);
       }
-      return (parseInt(window.map.mapPin.style.left, 10) + MAIN_PIN_WIDTH / 2) + ', ' + (parseInt(window.map.mapPin.style.top, 10) + MAIN_PIN_HEIGHT / 2);
+      return (parseInt(window.map.pin.style.left, 10) + MAIN_PIN_WIDTH / 2) + ', ' + (parseInt(window.map.pin.style.top, 10) + MAIN_PIN_HEIGHT / 2);
     };
 
     adFormAddress.value = calculateAddress();
@@ -115,6 +130,14 @@
 
       for (var i = 0, len = arguments.length; i < len; i++) {
         adFormGuestsOptions[arguments[i]].disabled = false;
+      }
+
+      if (adFormGuestsInput.value !== '0' && roomsFieldValue === '100') {
+        validationMessage = 'Выбранный тип жилья предназначен не для гостей';
+      }
+
+      if (adFormGuestsInput.value > roomsFieldValue) {
+        validationMessage = 'Гостей должно быть не более ' + roomsFieldValue;
       }
     };
 
@@ -147,37 +170,14 @@
     var validationMessage = '';
     var typeFieldValue = adFormTypeSelect.value;
 
-    var setPriceInputParameters = function (minValue, placeholder, message) {
+    var setPriceInputParameters = function (minValue, message) {
       adFormPriceInput.min = minValue;
-      adFormPriceInput.placeholder = placeholder;
-
-      if (message) {
-        validationMessage = message;
-      }
+      adFormPriceInput.placeholder = minValue;
+      validationMessage = message;
     };
 
-    switch (typeFieldValue) {
-      case 'bungalo':
-        setPriceInputParameters(0, 0);
-        break;
-
-      case 'flat':
-        setPriceInputParameters(1000, 1000, 'Минимальная цена - 1000');
-        break;
-
-      case 'house':
-        setPriceInputParameters(5000, 5000, 'Минимальная цена - 5000');
-        break;
-
-      case 'palace':
-        setPriceInputParameters(10000, 10000, 'Минимальная цена - 10000');
-        break;
-
-      default:
-        validationMessage = '';
-        break;
-    }
-
+    var minPrice = minPriceForType[typeFieldValue];
+    setPriceInputParameters(minPrice, 'Минимальная цена - ' + minPrice);
     adFormPriceInput.setCustomValidity(validationMessage);
   };
 
@@ -249,14 +249,12 @@
   adFormResetButton.addEventListener('click', disablingPage);
 
   window.form = {
-    adForm: adForm,
+    node: adForm,
     setAddressValue: setAddressValue,
     activationInputs: activationInputs,
     disablingInputs: disablingInputs,
     validateGuestsFiled: validateGuestsFiled,
-    adFormGuestsInput: adFormGuestsInput,
-    adFormRoomsInput: adFormRoomsInput,
-    adFormAddress: adFormAddress
+    address: adFormAddress
   };
 
 })();

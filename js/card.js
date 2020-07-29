@@ -2,6 +2,13 @@
 
 (function () {
 
+  var TYPES = {
+    flat: 'Квартира',
+    bungalo: 'Бунгало',
+    house: 'Дом',
+    palace: 'Дворец'
+  };
+
   var announcementСardTemplate = document.querySelector('#card').content.querySelector('article');
   var announcementСardCloseBtn = announcementСardTemplate.querySelector('.popup__close');
   var announcementPhoto = announcementСardTemplate.querySelector('.popup__photo');
@@ -33,23 +40,7 @@
     });
     announcementFeatures.innerHTML = '';
     announcementFeatures.appendChild(featuresFragment);
-
-    switch (offerData.offer.type) {
-      case 'flat':
-        announcementType.textContent = 'Квартира';
-        break;
-      case 'bungalo':
-        announcementType.textContent = 'Бунгало';
-        break;
-      case 'house':
-        announcementType.textContent = 'Дом';
-        break;
-      case 'palace':
-        announcementType.textContent = 'Дворец';
-        break;
-      default:
-        announcementType.textContent = '';
-    }
+    announcementType.textContent = TYPES[offerData.offer.type];
 
     announcementPhotos.innerHTML = '';
     offerData.offer.photos.forEach(function (item, index) {
@@ -86,9 +77,9 @@
   window.card = {
     template: announcementСardTemplate,
     closeButton: announcementСardCloseBtn,
-    createCard: createCard,
-    openCard: openCard,
-    closeCard: closeCard,
+    create: createCard,
+    open: openCard,
+    close: closeCard,
     cardEscPressHandler: cardEscPressHandler
   };
 
