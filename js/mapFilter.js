@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var SOMETHING_VALUE = 'any';
+  var ANY_VALUE = 'any';
 
   var mapFilter = document.querySelector('.map__filters-container');
   var mapFilterInputs = mapFilter.querySelectorAll('input');
@@ -13,10 +13,10 @@
   var mapFilterFeaturesInputs = mapFilter.querySelectorAll('input[name = "features"]');
 
   var sortParams = {
-    type: SOMETHING_VALUE,
-    price: SOMETHING_VALUE,
-    rooms: SOMETHING_VALUE,
-    guests: SOMETHING_VALUE,
+    type: ANY_VALUE,
+    price: ANY_VALUE,
+    rooms: ANY_VALUE,
+    guests: ANY_VALUE,
     features: []
   };
 
@@ -34,21 +34,33 @@
     Array.from(mapFilterInputs).forEach(function (input) {
       input.disabled = true;
     });
+
     Array.from(mapFilterSelects).forEach(function (select) {
       select.disabled = true;
+    });
+  };
+
+  var resetForm = function () {
+    mapFilterTypeSelect.value = ANY_VALUE;
+    mapFilterPriceSelect.value = ANY_VALUE;
+    mapFilterRoomsSelect.value = ANY_VALUE;
+    mapFilterGuestsSelect.value = ANY_VALUE;
+
+    mapFilterFeaturesInputs.forEach(function (input) {
+      input.checked = false;
     });
   };
 
   var sortingArray = function () {
     var sortArray = window.dataArray.slice();
 
-    if (sortParams.type !== SOMETHING_VALUE) {
+    if (sortParams.type !== ANY_VALUE) {
       sortArray = sortArray.filter(function (el) {
         return el.offer.type === sortParams.type;
       });
     }
 
-    if (sortParams.price !== SOMETHING_VALUE) {
+    if (sortParams.price !== ANY_VALUE) {
       switch (sortParams.price) {
         case 'low':
           sortArray = sortArray.filter(function (el) {
@@ -69,13 +81,13 @@
       }
     }
 
-    if (sortParams.rooms !== SOMETHING_VALUE) {
+    if (sortParams.rooms !== ANY_VALUE) {
       sortArray = sortArray.filter(function (el) {
         return el.offer.rooms === Number(sortParams.rooms);
       });
     }
 
-    if (sortParams.guests !== SOMETHING_VALUE) {
+    if (sortParams.guests !== ANY_VALUE) {
       sortArray = sortArray.filter(function (el) {
         return el.offer.guests === Number(sortParams.guests);
       });
@@ -95,13 +107,13 @@
       });
     }
 
-    window.pin.removePins();
+    window.pin.remove();
 
     var lim = sortArray.length > 5 ? 5 : sortArray.length;
-    window.pin.renderPins(sortArray, lim);
-    window.pin.mounPins();
+    window.pin.render(sortArray, lim);
+    window.pin.mount();
 
-    window.card.closeCard();
+    window.card.close();
 
     return sortArray;
   };
@@ -140,10 +152,9 @@
   });
 
   window.mapFilter = {
-    mapFilter: mapFilter,
-    mapFilterInputs: mapFilterInputs,
-    mapFilterSelects: mapFilterSelects,
-    activationMapInputs: activationMapInputs,
-    disablingMapInputs: disablingMapInputs
+    node: mapFilter,
+    activationInputs: activationMapInputs,
+    disablingInputs: disablingMapInputs,
+    resetForm: resetForm
   };
 })();

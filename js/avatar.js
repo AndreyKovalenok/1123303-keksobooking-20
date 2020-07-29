@@ -39,4 +39,9 @@
     housingPreview.innerHTML = '';
     housingPreview.appendChild(img);
   });
+
+  window.avatar = {
+    preview: avatarPreview,
+    housingPreview: housingPreview
+  };
 })();
